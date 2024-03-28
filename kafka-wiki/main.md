@@ -67,9 +67,7 @@ spring.kafka.producer.properties.enable.idempotence=true
 ./bin/kafka-server-start.sh ./config/kraft/server.properties
 ```
 
-
 #### Топики
-
 ```shell
 # Создание нового топика:
 ./bin/kafka-topics.sh --create --topic payment-created-events-topic --partitions 3 --replication-factor 3 --bootstrap-server localhost:9092,localhost:9094
@@ -82,7 +80,6 @@ spring.kafka.producer.properties.enable.idempotence=true
 ```
 
 #### Сообщения:
-
 ```shell
 # Отправка сообщения:
 ./bin/kafka-console-producer.sh --bootstrap-server localhost:9092,localhost:9094 --topic <topic-name>
@@ -92,4 +89,20 @@ spring.kafka.producer.properties.enable.idempotence=true
 
 # Прочитать сообщения из топика с начала:
 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092,localhost:9094 --topic test-topic --from-beginning
+```
+
+#### Из docker/compose:
+```shell
+# Создать топик
+docker compose exec [SERVICE_NAME] kafka-topics.sh --create --topic baeldung_linux --partitions 1 --replication-factor 1 --bootstrap-server kafka:9092
+
+# Список топиков
+docker compose exec [SERVICE_NAME] kafka-topics.sh --list --bootstrap-server kafka:9092
+docker exec -it [CONTAINER_NAME] kafka-topics.sh --list --bootstrap-server kafka:9092
+
+# Отправить сообщение
+docker exec -it [CONTAINER_NAME] kafka-console-producer.sh --topic [TOPIC_NAME] --bootstrap-server kafka:9092
+
+# Получить сообщения из топика
+docker exec -it [CONTAINER_NAME] kafka-console-consumer.sh --topic [TOPIC_NAME] --bootstrap-server kafka:9092
 ```
